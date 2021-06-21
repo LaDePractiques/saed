@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:revisiones_spm/models/user.dart';
 import 'package:revisiones_spm/services/user.dart';
-import 'package:flutter/src/widgets/title.dart';
-import 'package:flutter/src/material/outline_button.dart';
-import 'package:revisiones_spm/constants.dart';
-import 'package:mysql1/mysql1.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class UsersScreen extends StatefulWidget {
   get title => 'Usuarios';
@@ -141,7 +140,7 @@ class _UsersScreenState extends State<UsersScreen> {
               .map(
                 (user) => DataRow(cells: [
                   DataCell(
-                    Text(user.id),
+                    Text(user.id.toString()),
                     onTap: () {
                       _showValues(user);
                       // Set the Selected user to Update
@@ -267,60 +266,4 @@ class _UsersScreenState extends State<UsersScreen> {
       ),
     );
   }
-  /*List<User> users = [];
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: buildListView(context),
-    );
-  }
-
-  ListView buildListView(BuildContext context) {
-    users = getAllUsers('Usuarios') as List<User>;
-    print(users.length);
-    return ListView.builder(
-        itemCount: users.length,
-        itemBuilder: (context, index) {
-          return ListTile(
-            title: Text(users[index].firstName + ' ' + users[index].lastName),
-            subtitle: Text(users[index].roleId),
-            leading: Icon(Icons.contacts),
-            trailing: Icon(Icons.arrow_forward),
-          );
-        });
-  }
-
-  Future<List<User>> getAllUsers(String tableDb) async {
-    try {
-      // Open a connection
-      final conn = await MySqlConnection.connect(ConnectionSettings(
-          host: HOST, port: PORT, user: USER, db: DB, password: PSW));
-      print('database connected');
-      if (tableDb == 'Usuarios') {
-        var results = await conn.query(SELECT_ALL_USERS);
-        for (var row in results) {
-          print('Name: ${row[1]}, lastname: ${row[2]}');
-          User user = new User(
-            {row[0]}.toString(),
-            {row[1]}.toString(),
-            {row[2]}.toString(),
-            {row[3]}.toString(),
-            {row[5]}.toString(),
-            {row[6]}.toString(),
-            {row[7]}.toString(),
-            {row[8]}.toString(),
-            {row[10]}.toString(),
-          );
-          users.add(user);
-          print(user.firstName);
-        }
-        print(users.length);
-      }
-      //close the connection
-      await conn.close();
-    } catch (e) {
-      print('database NOT connected');
-    }
-    return users.toList();
-  }*/
 }

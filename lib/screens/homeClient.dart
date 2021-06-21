@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/provider/user_provider.dart';
-import 'package:revisiones_spm/screens/login1.dart';
 import 'package:revisiones_spm/screens/permission.dart';
 import 'package:revisiones_spm/screens/users.dart';
 import 'package:revisiones_spm/services/functions.dart';
 import 'package:revisiones_spm/services/styles.dart';
 import 'package:revisiones_spm/widgets/custom_text.dart';
-import 'package:provider/provider.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen1 extends StatefulWidget {
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _HomeScreen1State createState() => _HomeScreen1State();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _HomeScreen1State extends State<HomeScreen1> {
+  var email = '';
+  var name = '';
+
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserProvider>(context);
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -34,11 +33,11 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             UserAccountsDrawerHeader(
               accountEmail: CustomText(
-                msg: User.EMAIL,
+                msg: email,
                 color: white,
               ),
               accountName: CustomText(
-                msg: User.FIRST_NAME,
+                msg: name,
                 color: white,
               ),
             ),
@@ -94,16 +93,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 msg: "Mis auditorias",
               ),
               onTap: () {},
-            ),
-            ListTile(
-              leading: Icon(Icons.exit_to_app),
-              title: CustomText(
-                msg: "Cerrar sesión",
-              ),
-              onTap: () {
-                user.signOut();
-                changeScreenReplacement(context, LoginOne());
-              },
             ),
           ],
         ),
@@ -172,7 +161,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.w600),
                             ),
                             onPressed: () {
-                              changeScreenReplacement(context, HomeScreen());
+                              //changeScreenReplacement(context, HomeScreen1());
                             },
                           ),
                         )

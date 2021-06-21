@@ -8,29 +8,20 @@ List<User> modelUserFromJson(String str) =>
 //String modelUserToJson(List<User> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class User {
-  static const FIRST_NAME = 'FirstName';
-  static const LAST_NAME = 'LastName';
-  static const EMAIL = "email";
-  static const DNI = 'dni';
-  static const DIRECTION = 'direction';
-  static const CITY = 'city';
-  static const ID = 'id';
-  static const STRIPE_ID = 'stripeId';
-
   String firstName;
   String lastName;
   String email;
   String dni;
   String direction;
   String city;
-  String id;
+  int id;
   String stripeId;
-  String birthdate;
-  String roleId;
-  String emailVerifiedAt;
+  DateTime birthdate;
+  int roleId;
+  Timestamp emailVerifiedAt;
   String password;
-  String createdAt;
-  String updateAt;
+  Timestamp createdAt;
+  Timestamp updateAt;
   String rememberToken;
 
   User(
@@ -52,48 +43,34 @@ class User {
 //  GETTERS
   String get getFirstName => firstName;
   String get getLastName => lastName;
-  String get getEmail => email;
+  String get getEmail {
+    return this.email;
+  }
+
   String get getDni => dni;
   String get getAddress => direction;
   String get getCountry => city;
-  String get getId => id;
+  int get getId => id;
   String get getStripeId => stripeId;
-  String get getBirthdate => birthdate;
-  String get getRoleId => roleId;
-
-  User.fromSnapshot(DocumentSnapshot snap) {
-    lastName = snap.data[LAST_NAME];
-    firstName = snap.data[FIRST_NAME];
-    email = snap.data[EMAIL];
-    dni = snap.data[DNI];
-    direction = snap.data[DIRECTION];
-    city = snap.data[CITY];
-    id = snap.data[ID];
-    stripeId = snap[STRIPE_ID];
-  }
+  DateTime get getBirthdate => birthdate;
+  int get getRoleId => roleId;
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'],
+      id: json['id'] as int,
       firstName: json['first_name'] as String,
       lastName: json['last_name'] as String,
       email: json['email'] as String,
-      emailVerifiedAt: json['email_verified_ad'] as String,
+      emailVerifiedAt: json['email_verified_ad'] as Timestamp,
       dni: json['dni'] as String,
       direction: json['direction'] as String,
       city: json['city'] as String,
-      birthdate: json['birthdate'] as String,
+      birthdate: json['birthdate'] as DateTime,
       password: json['password'] as String,
-      roleId: json['role_id'],
+      roleId: json['role_id'] as int,
       rememberToken: json['remember_token'] as String,
-      createdAt: json['created_at'] as String,
-      updateAt: json['update_at'] as String,
+      createdAt: json['created_at'] as Timestamp,
+      updateAt: json['update_at'] as Timestamp,
     );
   }
-
-  /*Map<String, dynamic> toJson() => {
-        "id": id,
-        "Records": List<dynamic>.from(records.map((x) => x.toJson())),
-        "Result": result,
-    };*/
 }

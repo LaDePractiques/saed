@@ -10,24 +10,6 @@ class UserService {
   static const _ADD_USER_ACTION = 'ADD_USER';
   static const _UPDATE_USER_ACTION = 'UPDATE_USER';
   static const _DELETE_USER_ACTION = 'DELETE_USER';
-  //firestore auth
-  String collection = "users";
-  Firestore _firestore = Firestore.instance;
-
-  //firestore auth
-  void createUser(Map<String, dynamic> values) {
-    _firestore.collection(collection).document(values["id"]).setData(values);
-  }
-
-  void updateDetails(Map<String, dynamic> values) {
-    _firestore.collection(collection).document(values["id"]).updateData(values);
-  }
-
-  Future<User> getUserById(String id) =>
-      _firestore.collection(collection).document(id).get().then((doc) {
-        return User.fromSnapshot(doc);
-      });
-  //end firestore auth
 
   //services db
   static Future<List<User>> getUsers() async {
@@ -81,7 +63,7 @@ class UserService {
 
   // update an User in Db
   static Future<String> updateUser(
-      String userId, String firstName, String lastName) async {
+      int userId, String firstName, String lastName) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = _UPDATE_USER_ACTION;
@@ -101,7 +83,7 @@ class UserService {
   }
 
   // Delete an User from Db
-  static Future<String> deleteUser(String userId) async {
+  static Future<String> deleteUser(int userId) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = _DELETE_USER_ACTION;
