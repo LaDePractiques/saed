@@ -1,23 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:revisiones_spm/models/user.dart';
+import 'package:revisiones_spm/constants.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  //script php
-  static const ROOT = 'http://10.0.2.2/revisiones_spmaritim/user_actions.php';
-  static const _GET_ALL_ACTION = 'GET_ALL';
-  static const _ADD_USER_ACTION = 'ADD_USER';
-  static const _UPDATE_USER_ACTION = 'UPDATE_USER';
-  static const _DELETE_USER_ACTION = 'DELETE_USER';
-
   //services db
   static Future<List<User>> getUsers() async {
     List<User> list = [];
     try {
       var map = Map<String, dynamic>();
-      map['action'] = _GET_ALL_ACTION;
-      final response = await http.post(ROOT, body: map);
+      map['action'] = GET_ALL_USERS_ACTION;
+      final response = await http.post(ROOT_USER_ACTION, body: map);
       print('getUsers Response: ${response.body}');
       if (200 == response.statusCode) {
         final data = jsonDecode(response.body);
@@ -46,10 +39,10 @@ class UserService {
   static Future<String> addUser(String firstName, String lastName) async {
     try {
       var map = Map<String, dynamic>();
-      map['action'] = _ADD_USER_ACTION;
+      map['action'] = ADD_USER_ACTION;
       map['first_name'] = firstName;
       map['last_name'] = lastName;
-      final response = await http.post(ROOT, body: map);
+      final response = await http.post(ROOT_USER_ACTION, body: map);
       print('addUser Response: ${response.body}');
       if (200 == response.statusCode) {
         return response.body;
@@ -66,11 +59,11 @@ class UserService {
       int userId, String firstName, String lastName) async {
     try {
       var map = Map<String, dynamic>();
-      map['action'] = _UPDATE_USER_ACTION;
+      map['action'] = UPDATE_USER_ACTION;
       map['id'] = userId;
       map['first_name'] = firstName;
       map['last_name'] = lastName;
-      final response = await http.post(ROOT, body: map);
+      final response = await http.post(ROOT_USER_ACTION, body: map);
       print('updateUser Response: ${response.body}');
       if (200 == response.statusCode) {
         return response.body;
@@ -86,9 +79,9 @@ class UserService {
   static Future<String> deleteUser(int userId) async {
     try {
       var map = Map<String, dynamic>();
-      map['action'] = _DELETE_USER_ACTION;
+      map['action'] = DELETE_USER_ACTION;
       map['id'] = userId;
-      final response = await http.post(ROOT, body: map);
+      final response = await http.post(ROOT_USER_ACTION, body: map);
       print('deleteUser Response: ${response.body}');
       if (200 == response.statusCode) {
         return response.body;
