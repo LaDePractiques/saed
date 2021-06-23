@@ -5,10 +5,6 @@ const USER = 'rootdb';
 const DB = 'revisiones_spmaritim';
 const PSW = 'admin';
 
-//query
-//const SELECT_ALL_USERS = "select * from users";
-//const SELECT_ALL_SHIPS = "select * from ships";
-
 //script php
 const ROOT_USER_ACTION =
     'http://10.0.2.2/revisiones_spmaritim/user_actions.php';
@@ -20,6 +16,7 @@ const DELETE_USER_ACTION = 'DELETE_USER';
 const ROOT_SHIPS_ACTION =
     'http://10.0.2.2/revisiones_spmaritim/ship_actions.php';
 const GET_ALL_SHIPS_ACTION = 'GET_ALL_SHIPS';
+const GET_ALL_SHIPS_OF_USER_ACTION = 'GET_ALL_SHIPS_OF_USER';
 const ADD_SHIP_ACTION = 'ADD_SHIP';
 const UPDATE_SHIP_ACTION = 'UPDATE_SHIP';
 const DELETE_SHIP_ACTION = 'DELETE_SHIP';
