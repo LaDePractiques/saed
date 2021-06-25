@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revisiones_spm/models/itemUser.dart';
 import 'package:revisiones_spm/models/user.dart';
 import 'package:revisiones_spm/services/user.dart';
 import 'package:http/http.dart' as http;
@@ -13,6 +14,7 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
+  List<ItemUser> itemList = generateItemAsList(10);
   List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
   // First Name TextField
@@ -115,11 +117,8 @@ class _UsersScreenState extends State<UsersScreen> {
     _lastNameController.text = user.lastName;
   }
 
-  //ExpansionPanel
-   
-  
   // DataTable->show the user list
-  SingleChildScrollView _dataBody() {
+  /*SingleChildScrollView _dataBody() {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
@@ -192,81 +191,126 @@ class _UsersScreenState extends State<UsersScreen> {
         ),
       ),
     );
-  }
+  }*/
 
   // UI
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: _scaffoldKey,
-      appBar: AppBar(
-        title: Text(_titleProgress),
-        actions: <Widget>[
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: () {
-              _getUsers();
-            },
-          )
-        ],
-      ),
-      body: Container(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: TextField(
-                controller: _firstNameController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'First Name',
-                ),
+    return SingleChildScrollView(
+        child: SafeArea(
+            child: Container(
+      color: Colors.blue,
+      child: myWidgetExpansion(),
+    )));
+    /*return Scaffold(
+            key: _scaffoldKey,
+            appBar: AppBar(
+              title: Text(_titleProgress),
+              actions: <Widget>[
+                IconButton(
+                  icon: Icon(Icons.refresh),
+                  onPressed: () {
+                    _getUsers();
+                  },
+                )
+              ],
+            ),
+            body: Container(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: TextField(
+                      controller: _firstNameController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'First Name',
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.all(20.0),
+                    child: TextField(
+                      controller: _lastNameController,
+                      decoration: InputDecoration.collapsed(
+                        hintText: 'Last Name',
+                      ),
+                    ),
+                  ),
+                  // Add an update button and a Cancel Button
+                  // show these buttons only when updating an user
+                  _isUpdating
+                      ? Row(
+                          children: <Widget>[
+                            OutlinedButton(
+                              child: Text('UPDATE'),
+                              onPressed: () {
+                                _updateUser(_selectedUser);
+                              },
+                            ),
+                            OutlinedButton(
+                              child: Text('CANCEL'),
+                              onPressed: () {
+                                setState(() {
+                                  _isUpdating = false;
+                                });
+                                _clearValues();
+                              },
+                            ),
+                          ],
+                        )
+                      : Container(),
+                  Expanded(
+                    child: _dataBody(),
+                  ),
+                ],
               ),
             ),
-            Padding(
-              padding: EdgeInsets.all(20.0),
-              child: TextField(
-                controller: _lastNameController,
-                decoration: InputDecoration.collapsed(
-                  hintText: 'Last Name',
-                ),
-              ),
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                _addUser();
+              },
+              child: Icon(Icons.add),
             ),
-            // Add an update button and a Cancel Button
-            // show these buttons only when updating an user
-            _isUpdating
-                ? Row(
-                    children: <Widget>[
-                      OutlinedButton(
-                        child: Text('UPDATE'),
-                        onPressed: () {
-                          _updateUser(_selectedUser);
-                        },
-                      ),
-                      OutlinedButton(
-                        child: Text('CANCEL'),
-                        onPressed: () {
-                          setState(() {
-                            _isUpdating = false;
-                          });
-                          _clearValues();
-                        },
-                      ),
-                    ],
-                  )
-                : Container(),
-            Expanded(
-              child: _dataBody(),
+          );*/
+  }
+
+  Widget myWidgetExpansion() {
+    return ExpansionPanelList(
+      expansionCallback: (int index, bool isExpanded) {
+        setState(() {
+          itemList[index].isExpanded = !isExpanded;
+        });
+      },
+      children: itemList.map<ExpansionPanel>((ItemUser item) {
+        return ExpansionPanel(
+          headerBuilder: (BuildContext context, bool isExpanded) {
+            return ListTile(
+              title: Text(item.title),
+            );
+          },
+          body: SafeArea(
+            child: ListTile(
+              title: Text(item.expanded),
+              subtitle: Text('altres dades'),
+              leading: Icon(Icons.edit),
+              trailing: Icon(Icons.delete),
+              onTap: () {
+                setState(() {
+                  //_deleteUser(user);
+                });
+              },
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addUser();
-        },
-        child: Icon(Icons.add),
-      ),
+          ),
+          isExpanded: item.isExpanded,
+        );
+      }).toList(),
     );
   }
+}
+
+List<ItemUser> generateItemAsList(int size) {
+  return List.generate(size, (index) {
+    return ItemUser('Role_id', 'nom' + ' ' + 'cognom', false);
+  });
 }

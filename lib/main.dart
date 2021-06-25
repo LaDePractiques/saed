@@ -3,7 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/screens/homeClient.dart';
+import 'package:revisiones_spm/screens/home.dart';
 import 'package:revisiones_spm/screens/users.dart';
 import 'package:revisiones_spm/services/functions.dart';
 
@@ -17,7 +17,10 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Revisiones SPM',
-      home: new MyHomePage(),
+      routes: myRoutes,
+      home: HomeScreen(),
+      //open login:
+      //home: new MyHomePage(),
     );
   }
 }
@@ -48,10 +51,10 @@ class _MyHomePageState extends State<MyHomePage> {
         msg = "Login Fail";
       });
     } else {
-      if (datauser[0]['role_id'] == '1') {
-        print('client');
-        changeScreenReplacement(context, HomeScreen1());
-      } else if (datauser[0]['role_id'] == '2') {}
+      //if (datauser[0]['role_id'] == '7') {
+      Navigator.pushNamed(context, '/home', arguments: {datauser});
+      //changeScreenReplacement(context, HomeScreen());
+      //} else if (datauser[0]['role_id'] == '2') {}
 
       setState(() {
         id = datauser[0]['id'];

@@ -17,19 +17,16 @@ class _PermissionScreenState extends State<PermissionScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text('Permisos')),
-      body: ListView(
-        children: createItems(),
+      body: ListView.builder(
+        itemCount: options.length,
+        itemBuilder: (context, index) {
+          return Card(
+            child: ListTile(
+              title: Text(options[index]),
+            ),
+          );
+        },
       ),
     );
-  }
-
-  List<Widget> createItems() {
-    List listItem;
-    for (String opt in options) {
-      final tempWidget = ListTile(title: Text(opt));
-      listItem.add(tempWidget);
-      listItem.add(Divider());
-    }
-    return listItem;
   }
 }

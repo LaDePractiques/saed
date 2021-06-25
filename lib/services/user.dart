@@ -13,11 +13,11 @@ class UserService {
       final response = await http.post(ROOT_USER_ACTION, body: map);
       print('getUsers Response: ${response.body}');
       if (200 == response.statusCode) {
-        final data = jsonDecode(response.body);
-        for (Map item in data) {
-          list.add(User.fromJson(item));
-        }
-        //list = parseResponse(response.body);
+        //final data = jsonDecode(jsonEncode(response.body)) as List;
+        //for (Map item in data) {
+        //list.add(User.fromJson(item));
+        //}
+        list = parseResponse(response.body);
         return list;
       } else {
         return list;
@@ -29,10 +29,10 @@ class UserService {
   }
 
   static List<User> parseResponse(String responseBody) {
-    final parsed =
-        jsonDecode(json.encode(responseBody)); //.cast<Map<String, dynamic>>();
-
-    return parsed.map<User>((json) => User.fromJson(json)).toList();
+    var parsed = jsonDecode(json.encode(responseBody))
+        as List; //.cast<Map<String, dynamic>>();
+    List<User> list = parsed.map((e) => User.fromJson(e)).toList();
+    return list;
   }
 
   // add User to the db

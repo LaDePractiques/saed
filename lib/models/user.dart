@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'dart:core';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-List<User> modelUserFromJson(String str) =>
-    List<User>.from(json.decode(json.encode(str)).map((x) => User.fromJson(x)));
+//List<User> modelUserFromJson(String str) =>
+//  List<User>.from(json.decode(json.encode(str)).map((x) => User.fromJson(x)));
 
 //String modelUserToJson(List<User> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
@@ -15,7 +16,6 @@ class User {
   String direction;
   String city;
   int id;
-  String stripeId;
   DateTime birthdate;
   int roleId;
   Timestamp emailVerifiedAt;
@@ -43,19 +43,16 @@ class User {
 //  GETTERS
   String get getFirstName => firstName;
   String get getLastName => lastName;
-  String get getEmail {
-    return this.email;
-  }
-
+  String get getEmail => email;
   String get getDni => dni;
   String get getAddress => direction;
   String get getCountry => city;
   int get getId => id;
-  String get getStripeId => stripeId;
   DateTime get getBirthdate => birthdate;
   int get getRoleId => roleId;
 
-  factory User.fromJson(Map<String, dynamic> json) {
+  //factory User.fromJson(Map<String, dynamic> json) {
+  factory User.fromJson(dynamic json) {
     return User(
       id: json['id'] as int,
       firstName: json['first_name'] as String,
