@@ -14,7 +14,7 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-  List<ItemUser> itemList = generateItemAsList(10);
+  //List<ItemUser> itemList = generateItemAsList(10);
   List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
   // First Name TextField
@@ -24,6 +24,7 @@ class _UsersScreenState extends State<UsersScreen> {
   User _selectedUser;
   bool _isUpdating;
   String _titleProgress;
+  ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -196,6 +197,94 @@ class _UsersScreenState extends State<UsersScreen> {
   // UI
   @override
   Widget build(BuildContext context) {
+    return Scaffold(
+      body: RefreshIndicator(
+        color: Theme.of(context).primaryColor,
+        displacement: 40,
+        child: SafeArea(
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            child: ExpansionPanelList(
+              animationDuration: Duration(milliseconds: 500),
+              expansionCallback: (panelIndex, isExpanded) {
+                setState(() {
+                  _users[panelIndex].isExpanded = !isExpanded;
+                });
+              },
+              children: _users.map<ExpansionPanel>((User user) {
+                List fields = [
+                  '@  ' + user.email,
+                  'DNI: ' + user.dni,
+                  'Dirección: ' + user.direction,
+                  'Población: ' + user.city,
+                  'Fecha nacimiento: ' + user.birthdate.toString()
+                ];
+                return ExpansionPanel(
+                  headerBuilder: (context, isExpanded) {
+                    return ListTile(
+                        contentPadding: EdgeInsets.all(10.0),
+                        title: Text(
+                          user.firstName + ' ' + user.lastName,
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                        subtitle: Text(user.roleId),
+                        leading: Text(user.id));
+                  },
+                  body: Container(
+                    height: 200,
+                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    child: ListView.builder(
+                      itemCount: fields.length,
+                      itemBuilder: (BuildContext context, int position) {
+                        return getRow(position, fields);
+                      },
+                    ),
+                  ),
+                  isExpanded: user.isExpanded,
+                );
+              }).toList(),
+            ),
+          ),
+        ),
+        onRefresh: () async {
+          await Future.delayed(Duration(seconds: 2), () {
+            // do something
+            //getData();
+          });
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addUser();
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+
+  Widget getRow(int i, List fields) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.0),
+        child: ListTile(
+          title: Text(
+            fields[i],
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+}
+
+/*---------------------------------
     return SingleChildScrollView(
         child: SafeArea(
             child: Container(
@@ -279,30 +368,33 @@ class _UsersScreenState extends State<UsersScreen> {
     return ExpansionPanelList(
       expansionCallback: (int index, bool isExpanded) {
         setState(() {
-          itemList[index].isExpanded = !isExpanded;
+          _users[index].isExpanded = !isExpanded;
         });
       },
-      children: itemList.map<ExpansionPanel>((ItemUser item) {
+      children: _users.map<ExpansionPanel>((user) {
         return ExpansionPanel(
           headerBuilder: (BuildContext context, bool isExpanded) {
             return ListTile(
-              title: Text(item.title),
+              title: Text(user.firstName.toUpperCase() +
+                  ' ' +
+                  user.lastName.toUpperCase()),
             );
           },
           body: SafeArea(
             child: ListTile(
-              title: Text(item.expanded),
-              subtitle: Text('altres dades'),
+              title: Text('rol:' + user.roleId),
+              subtitle: Text(user.email),
               leading: Icon(Icons.edit),
               trailing: Icon(Icons.delete),
               onTap: () {
                 setState(() {
+                  print('borro user');
                   //_deleteUser(user);
                 });
               },
             ),
           ),
-          isExpanded: item.isExpanded,
+          isExpanded: user.isExpanded,
         );
       }).toList(),
     );
@@ -314,3 +406,4 @@ List<ItemUser> generateItemAsList(int size) {
     return ItemUser('Role_id', 'nom' + ' ' + 'cognom', false);
   });
 }
+*/

@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
+import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:revisiones_spm/models/user.dart';
 import 'package:revisiones_spm/screens/home.dart';
@@ -9,8 +12,6 @@ import 'package:revisiones_spm/services/functions.dart';
 
 void main() => runApp(new MyApp());
 
-String id = '';
-
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Revisiones SPM',
       routes: myRoutes,
-      home: HomeScreen(),
+      //home: HomeScreen(),
       //open login:
-      //home: new MyHomePage(),
+      home: new MyHomePage(),
     );
   }
 }
@@ -43,25 +44,19 @@ class _MyHomePageState extends State<MyHomePage> {
       "password": controllerPass.text,
     });
 
-    var datauser = json.decode(jsonEncode(response.body));
-    print(datauser);
+    final jsonresponse = json.decode(response.body);
+    print(jsonresponse);
 
-    if (datauser.length == 0) {
-      setState(() {
+    if (jsonresponse.length == 0) {
+      /*setState(() {
         msg = "Login Fail";
-      });
+      });*/
+      changeScreenReplacement(context, MyHomePage());
     } else {
-      //if (datauser[0]['role_id'] == '7') {
-      Navigator.pushNamed(context, '/home', arguments: {datauser});
-      //changeScreenReplacement(context, HomeScreen());
-      //} else if (datauser[0]['role_id'] == '2') {}
-
-      setState(() {
-        id = datauser[0]['id'];
-      });
+      final user = User.fromJson(jsonresponse[0]);
+      Navigator.pushNamed(context, '/home', arguments: user);
     }
-
-    return datauser;
+    return jsonresponse;
   }
 
   @override
@@ -109,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           controller: controllerEmail,
                           decoration: InputDecoration(
                               icon: Icon(Icons.email),
-                              hintText: 'example@email.com'),
+                              hintText: 'email@example.com'),
                         ),
                       ),
                       Container(
@@ -158,8 +153,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                       Text(
                         msg,
-                        style: TextStyle(fontSize: 20.0, color: Colors.blue),
-                      )
+                        style: TextStyle(fontSize: 20.0, color: Colors.red),
+                      ),
                     ],
                   ),
                 ),

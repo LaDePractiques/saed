@@ -1,29 +1,9 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-//List<User> modelUserFromJson(String str) =>
-//  List<User>.from(json.decode(json.encode(str)).map((x) => User.fromJson(x)));
-
-//String modelUserToJson(List<User> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
+import 'package:revisiones_spm/models/ship.dart';
 
 class User {
-  String firstName;
-  String lastName;
-  String email;
-  String dni;
-  String direction;
-  String city;
-  int id;
-  DateTime birthdate;
-  int roleId;
-  Timestamp emailVerifiedAt;
-  String password;
-  Timestamp createdAt;
-  Timestamp updateAt;
-  String rememberToken;
-
   User(
       {this.id,
       this.firstName,
@@ -38,36 +18,72 @@ class User {
       this.roleId,
       this.rememberToken,
       this.createdAt,
-      this.updateAt});
+      this.updatedAt,
+      this.isExpanded = false});
 
-//  GETTERS
+  String id;
+  String firstName;
+  String lastName;
+  String email;
+  dynamic emailVerifiedAt;
+  String dni;
+  String direction;
+  String city;
+  DateTime birthdate;
+  String password;
+  String roleId;
+  dynamic rememberToken;
+  dynamic createdAt;
+  dynamic updatedAt;
+  bool isExpanded;
+
+  //  GETTERS
   String get getFirstName => firstName;
   String get getLastName => lastName;
   String get getEmail => email;
   String get getDni => dni;
   String get getAddress => direction;
   String get getCountry => city;
-  int get getId => id;
+  String get getId => id;
   DateTime get getBirthdate => birthdate;
-  int get getRoleId => roleId;
+  String get getRoleId => roleId;
 
-  //factory User.fromJson(Map<String, dynamic> json) {
-  factory User.fromJson(dynamic json) {
-    return User(
-      id: json['id'] as int,
-      firstName: json['first_name'] as String,
-      lastName: json['last_name'] as String,
-      email: json['email'] as String,
-      emailVerifiedAt: json['email_verified_ad'] as Timestamp,
-      dni: json['dni'] as String,
-      direction: json['direction'] as String,
-      city: json['city'] as String,
-      birthdate: json['birthdate'] as DateTime,
-      password: json['password'] as String,
-      roleId: json['role_id'] as int,
-      rememberToken: json['remember_token'] as String,
-      createdAt: json['created_at'] as Timestamp,
-      updateAt: json['update_at'] as Timestamp,
-    );
-  }
+  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory User.fromJson(Map<String, dynamic> json) => User(
+        id: json["id"],
+        firstName: json["first_name"],
+        lastName: json["last_name"],
+        email: json["email"],
+        emailVerifiedAt: json["email_verified_at"],
+        dni: json["dni"],
+        direction: json["direction"],
+        city: json["city"],
+        birthdate: DateTime.parse(json["birthdate"]),
+        password: json["password"],
+        roleId: json["role_id"],
+        rememberToken: json["remember_token"],
+        createdAt: json["created_at"],
+        updatedAt: json["updated_at"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "first_name": firstName,
+        "last_name": lastName,
+        "email": email,
+        "email_verified_at": emailVerifiedAt,
+        "dni": dni,
+        "direction": direction,
+        "city": city,
+        "birthdate":
+            "${birthdate.year.toString().padLeft(4, '0')}-${birthdate.month.toString().padLeft(2, '0')}-${birthdate.day.toString().padLeft(2, '0')}",
+        "password": password,
+        "role_id": roleId,
+        "remember_token": rememberToken,
+        "created_at": createdAt,
+        "updated_at": updatedAt,
+      };
 }

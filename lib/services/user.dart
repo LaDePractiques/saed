@@ -11,14 +11,13 @@ class UserService {
       var map = Map<String, dynamic>();
       map['action'] = GET_ALL_USERS_ACTION;
       final response = await http.post(ROOT_USER_ACTION, body: map);
-      print('getUsers Response: ${response.body}');
+      //print('getUsers Response: ${response.body}');
       if (200 == response.statusCode) {
-        //final data = jsonDecode(jsonEncode(response.body)) as List;
-        //for (Map item in data) {
-        //list.add(User.fromJson(item));
-        //}
-        list = parseResponse(response.body);
-        return list;
+        final jsonresponse = json.decode(response.body);
+        print(jsonresponse);
+        List<User> usersList =
+            List<User>.from(jsonresponse.map((j) => User.fromJson(j)));
+        return usersList;
       } else {
         return list;
       }
@@ -26,13 +25,6 @@ class UserService {
       print('error: $e');
       return list;
     }
-  }
-
-  static List<User> parseResponse(String responseBody) {
-    var parsed = jsonDecode(json.encode(responseBody))
-        as List; //.cast<Map<String, dynamic>>();
-    List<User> list = parsed.map((e) => User.fromJson(e)).toList();
-    return list;
   }
 
   // add User to the db
@@ -56,7 +48,7 @@ class UserService {
 
   // update an User in Db
   static Future<String> updateUser(
-      int userId, String firstName, String lastName) async {
+      String userId, String firstName, String lastName) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = UPDATE_USER_ACTION;
@@ -76,7 +68,7 @@ class UserService {
   }
 
   // Delete an User from Db
-  static Future<String> deleteUser(int userId) async {
+  static Future<String> deleteUser(String userId) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = DELETE_USER_ACTION;

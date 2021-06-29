@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revisiones_spm/models/user.dart';
 import 'package:revisiones_spm/screens/audits.dart';
 import 'package:revisiones_spm/screens/home.dart';
 import 'package:revisiones_spm/screens/myAudits.dart';
@@ -25,4 +26,8 @@ void changeScreen(BuildContext context, Widget widget) {
 
 void changeScreenReplacement(BuildContext context, Widget widget) {
   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => widget));
+}
+
+void comeBack(BuildContext context) {
+  Navigator.pop(context);
 }

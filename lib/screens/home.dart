@@ -1,13 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/screens/audits.dart';
-import 'package:revisiones_spm/screens/myAudits.dart';
-import 'package:revisiones_spm/screens/myWorks.dart';
-import 'package:revisiones_spm/screens/permission.dart';
-import 'package:revisiones_spm/screens/ships.dart';
-import 'package:revisiones_spm/screens/users.dart';
-import 'package:revisiones_spm/screens/works.dart';
-import 'package:revisiones_spm/services/functions.dart';
 import 'package:revisiones_spm/services/styles.dart';
 import 'package:revisiones_spm/widgets/custom_text.dart';
 
@@ -17,8 +9,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var email = '';
-  var name = '';
   final List<String> myMenu = [
     'Usuarios',
     'Barcos',
@@ -31,6 +21,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final User user = ModalRoute.of(context).settings.arguments;
+    var email = user.email;
+    var name = user.firstName + ' ' + user.lastName;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -61,7 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 msg: "Usuarios",
               ),
               onTap: () {
-                changeScreen(context, UsersScreen());
+                Navigator.pushNamed(context, '/users', arguments: user);
               },
             ),
             ListTile(
@@ -69,7 +62,9 @@ class _HomeScreenState extends State<HomeScreen> {
               title: CustomText(
                 msg: "Barcos",
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/ships', arguments: user);
+              },
             ),
             ListTile(
               leading: Icon(Icons.build_circle),
@@ -77,7 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 msg: "Permisos",
               ),
               onTap: () {
-                changeScreen(context, PermissionScreen());
+                Navigator.pushNamed(context, '/permission', arguments: user);
               },
             ),
             ListTile(
@@ -85,28 +80,36 @@ class _HomeScreenState extends State<HomeScreen> {
               title: CustomText(
                 msg: "Auditorias",
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/audits', arguments: user);
+              },
             ),
             ListTile(
               leading: Icon(Icons.work),
               title: CustomText(
                 msg: "Trabajos y presupuestos",
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/works', arguments: user);
+              },
             ),
             ListTile(
               leading: Icon(Icons.folder),
               title: CustomText(
                 msg: "Mis trabajos",
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/myWorks', arguments: user);
+              },
             ),
             ListTile(
               leading: Icon(Icons.folder),
               title: CustomText(
                 msg: "Mis auditorias",
               ),
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, '/myAudits', arguments: user);
+              },
             ),
           ],
         ),
@@ -142,27 +145,32 @@ class _HomeScreenState extends State<HomeScreen> {
                   onTap: () {
                     switch (index) {
                       case 0:
-                        changeScreen(context, UsersScreen());
+                        Navigator.pushNamed(context, '/users', arguments: user);
                         break;
                       case 1:
-                        changeScreen(context, ShipsScreen());
+                        Navigator.pushNamed(context, '/ships', arguments: user);
                         break;
                       case 2:
-                        changeScreen(context, PermissionScreen());
+                        Navigator.pushNamed(context, '/permission',
+                            arguments: user);
                         break;
                       case 3:
-                        changeScreen(context, AuditsScreen());
+                        Navigator.pushNamed(context, '/audits',
+                            arguments: user);
                         break;
                       case 4:
-                        changeScreen(context, WorksScreen());
+                        Navigator.pushNamed(context, '/works', arguments: user);
                         break;
                       case 5:
-                        changeScreen(context, MyWorksScreen());
+                        Navigator.pushNamed(context, '/myWorks',
+                            arguments: user);
                         break;
                       case 6:
-                        changeScreen(context, MyAuditsScreen());
+                        Navigator.pushNamed(context, '/myAudits',
+                            arguments: user);
                         break;
                       default:
+                        Navigator.pushNamed(context, '/home', arguments: user);
                     }
                   });
             }),
