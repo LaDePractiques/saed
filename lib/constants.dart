@@ -13,7 +13,7 @@ const ADD_USER_ACTION = 'ADD_USER';
 const UPDATE_USER_ACTION = 'UPDATE_USER';
 const DELETE_USER_ACTION = 'DELETE_USER';
 
-const ROOT_SHIPS_ACTION =
+const ROOT_SHIP_ACTION =
     'http://10.0.2.2/revisiones_spmaritim/ship_actions.php';
 const GET_ALL_SHIPS_ACTION = 'GET_ALL_SHIPS';
 const GET_ALL_SHIPS_OF_USER_ACTION = 'GET_ALL_SHIPS_OF_USER';

@@ -6,8 +6,8 @@ import 'dart:convert';
 import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/screens/home.dart';
-import 'package:revisiones_spm/screens/users.dart';
+import 'package:revisiones_spm/screens/HomeScreen.dart';
+import 'package:revisiones_spm/screens/UsersScreen.dart';
 import 'package:revisiones_spm/services/functions.dart';
 
 void main() => runApp(new MyApp());

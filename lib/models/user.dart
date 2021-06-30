@@ -17,8 +17,6 @@ class User {
       this.password,
       this.roleId,
       this.rememberToken,
-      this.createdAt,
-      this.updatedAt,
       this.isExpanded = false});
 
   String id;
@@ -33,8 +31,6 @@ class User {
   String password;
   String roleId;
   dynamic rememberToken;
-  dynamic createdAt;
-  dynamic updatedAt;
   bool isExpanded;
 
   //  GETTERS
@@ -65,8 +61,6 @@ class User {
         password: json["password"],
         roleId: json["role_id"],
         rememberToken: json["remember_token"],
-        createdAt: json["created_at"],
-        updatedAt: json["updated_at"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -83,7 +77,5 @@ class User {
         "password": password,
         "role_id": roleId,
         "remember_token": rememberToken,
-        "created_at": createdAt,
-        "updated_at": updatedAt,
       };
 }

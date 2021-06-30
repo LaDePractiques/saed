@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:revisiones_spm/models/itemUser.dart';
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/services/user.dart';
+import 'package:revisiones_spm/services/UserService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -14,12 +13,9 @@ class UsersScreen extends StatefulWidget {
 }
 
 class _UsersScreenState extends State<UsersScreen> {
-  //List<ItemUser> itemList = generateItemAsList(10);
   List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
-  // First Name TextField
   TextEditingController _firstNameController;
-  // Last Name TextField
   TextEditingController _lastNameController;
   User _selectedUser;
   bool _isUpdating;
@@ -198,6 +194,18 @@ class _UsersScreenState extends State<UsersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
+      appBar: AppBar(
+        title: Text(_titleProgress),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.refresh),
+            onPressed: () {
+              _getUsers();
+            },
+          )
+        ],
+      ),
       body: RefreshIndicator(
         color: Theme.of(context).primaryColor,
         displacement: 40,
@@ -250,7 +258,7 @@ class _UsersScreenState extends State<UsersScreen> {
         onRefresh: () async {
           await Future.delayed(Duration(seconds: 2), () {
             // do something
-            //getData();
+            _getUsers();
           });
         },
       ),
