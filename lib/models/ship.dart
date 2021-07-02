@@ -3,17 +3,19 @@ import 'dart:convert';
 class Ship {
   Ship({
     this.id,
-    this.ownerId,
+    this.ownerName,
+    this.ownerLastName,
     this.identification,
-    this.name,
-    this.countryId,
+    this.shipName,
+    this.country,
   });
 
   String id;
-  String ownerId;
+  String ownerName;
+  String ownerLastName;
   String identification;
-  String name;
-  String countryId;
+  String shipName;
+  String country;
 
   factory Ship.fromRawJson(String str) => Ship.fromJson(json.decode(str));
 
@@ -21,17 +23,19 @@ class Ship {
 
   factory Ship.fromJson(Map<String, dynamic> json) => Ship(
         id: json["id"],
-        ownerId: json["owner_id"],
+        ownerName: json["first_name"],
+        ownerLastName: json["last_name"],
         identification: json["identification"],
-        name: json["name"],
-        countryId: json["country_id"],
+        shipName: json["shipname"],
+        country: json["countryname"],
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "owner_id": ownerId,
+        "first_name": ownerName,
+        "last_name": ownerLastName,
         "identification": identification,
-        "name": name,
-        "country_id": countryId,
+        "shipname": shipName,
+        "countryname": country,
       };
 }

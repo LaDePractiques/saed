@@ -10,6 +10,8 @@ import 'package:revisiones_spm/screens/HomeScreen.dart';
 import 'package:revisiones_spm/screens/UsersScreen.dart';
 import 'package:revisiones_spm/services/functions.dart';
 
+import 'constants.dart';
+
 void main() => runApp(new MyApp());
 
 class MyApp extends StatelessWidget {
@@ -53,8 +55,8 @@ class _MyHomePageState extends State<MyHomePage> {
       });*/
       changeScreenReplacement(context, MyHomePage());
     } else {
-      final user = User.fromJson(jsonresponse[0]);
-      Navigator.pushNamed(context, '/home', arguments: user);
+      currentUser = User.fromJson(jsonresponse[0]);
+      Navigator.pushNamed(context, '/home', arguments: currentUser);
     }
     return jsonresponse;
   }

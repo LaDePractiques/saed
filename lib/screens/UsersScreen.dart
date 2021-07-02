@@ -221,7 +221,7 @@ class _UsersScreenState extends State<UsersScreen> {
               },
               children: _users.map<ExpansionPanel>((User user) {
                 List fields = [
-                  '@  ' + user.email,
+                  user.email,
                   'DNI: ' + user.dni,
                   'Dirección: ' + user.direction,
                   'Población: ' + user.city,
@@ -236,7 +236,7 @@ class _UsersScreenState extends State<UsersScreen> {
                           style:
                               TextStyle(color: Theme.of(context).primaryColor),
                         ),
-                        subtitle: Text(user.roleId),
+                        subtitle: Text(user.roleName),
                         leading: Text(user.id));
                   },
                   body: Container(

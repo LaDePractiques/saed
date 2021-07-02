@@ -1,3 +1,8 @@
+//current user
+import 'package:revisiones_spm/models/user.dart';
+
+User currentUser;
+
 //db connection
 const HOST = '10.0.2.2';
 const PORT = 3306;

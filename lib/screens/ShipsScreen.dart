@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revisiones_spm/constants.dart';
 import 'package:revisiones_spm/models/ship.dart';
 import 'package:revisiones_spm/services/ShipService.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ class ShipsScreen extends StatefulWidget {
 class _ShipsScreenState extends State<ShipsScreen> {
   List<Ship> _ships;
   GlobalKey<ScaffoldState> _scaffoldKey;
-  TextEditingController _ownerIdController;
+  TextEditingController _ownerDniController;
   TextEditingController _identificationController;
   TextEditingController _nameController;
   TextEditingController _countryController;
@@ -31,7 +32,7 @@ class _ShipsScreenState extends State<ShipsScreen> {
     _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey(); // key to get the context to show a SnackBar
-    _ownerIdController = TextEditingController();
+    _ownerDniController = TextEditingController();
     _identificationController = TextEditingController();
     _nameController = TextEditingController();
     _countryController = TextEditingController();
@@ -55,7 +56,7 @@ class _ShipsScreenState extends State<ShipsScreen> {
 
   // add an Ship
   _addShip() {
-    if (_ownerIdController.text.isEmpty ||
+    if (_ownerDniController.text.isEmpty ||
         _identificationController.text.isEmpty ||
         _nameController.text.isEmpty ||
         _countryController.text.isEmpty) {
@@ -63,8 +64,11 @@ class _ShipsScreenState extends State<ShipsScreen> {
       return;
     }
     _showProgress('Adding Ship...');
-    ShipService.addShip(_ownerIdController.text, _identificationController.text,
-            _nameController.text, _countryController.text)
+    ShipService.addShip(
+            _ownerDniController.text,
+            _identificationController.text,
+            _nameController.text,
+            _countryController.text)
         .then((result) {
       if ('success' == result) {
         _getShips(); // Refresh the List
@@ -75,13 +79,23 @@ class _ShipsScreenState extends State<ShipsScreen> {
 
   _getShips() {
     _showProgress('Loading Ships...');
-    ShipService.getShips().then((ships) {
-      setState(() {
-        _ships = ships;
+    if (currentUser.roleId == '1') {
+      ShipService.getUserShips().then((ships) {
+        setState(() {
+          _ships = ships;
+        });
+        _showProgress(widget.title); // Reset the title
+        print("Length ${ships.length}");
       });
-      _showProgress(widget.title); // Reset the title
-      print("Length ${ships.length}");
-    });
+    } else {
+      ShipService.getAllShips().then((ships) {
+        setState(() {
+          _ships = ships;
+        });
+        _showProgress(widget.title); // Reset the title
+        print("Length ${ships.length}");
+      });
+    }
   }
 
   _updateShip(Ship ship) {
@@ -91,7 +105,7 @@ class _ShipsScreenState extends State<ShipsScreen> {
     _showProgress('Updating Ship...');
     ShipService.updateShip(
             ship.id,
-            _ownerIdController.text,
+            _ownerDniController.text,
             _identificationController.text,
             _nameController.text,
             _countryController.text)
@@ -117,17 +131,17 @@ class _ShipsScreenState extends State<ShipsScreen> {
 
   // Method to clear TextField values
   _clearValues() {
-    _ownerIdController.text = '';
+    _ownerDniController.text = '';
     _identificationController.text = '';
     _nameController.text = '';
     _countryController.text = '';
   }
 
   _showValues(Ship ship) {
-    _ownerIdController.text = ship.ownerId;
+    //_ownerDniController.text = ship.ownerName;
     _identificationController.text = ship.identification;
-    _nameController.text = ship.name;
-    _countryController.text = ship.countryId;
+    _nameController.text = ship.shipName;
+    _countryController.text = ship.country;
   }
 
   // DataTable->show the ship list
@@ -136,104 +150,189 @@ class _ShipsScreenState extends State<ShipsScreen> {
       scrollDirection: Axis.vertical,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: DataTable(
-          columns: [
-            DataColumn(
-              label: Text('ID'),
-            ),
-            DataColumn(
-              label: Text('PROPIETARIO'),
-            ),
-            DataColumn(
-              label: Text('IDENTIFICACIÓN'),
-            ),
-            DataColumn(
-              label: Text('NOMBRE'),
-            ),
-            DataColumn(
-              label: Text('PAÍS'),
-            ),
-            DataColumn(
-              label: Text('BORRAR'),
-            ),
-          ],
-          rows: _ships
-              .map(
-                (ship) => DataRow(cells: [
-                  DataCell(
-                    Text(ship.id),
-                    onTap: () {
-                      _showValues(ship);
-                      // Set the Selected ship to Update
-                      _selectedShip = ship;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
+        child: (currentUser.roleId == '1')
+            ? DataTable(
+                columns: [
+                  /*DataColumn(
+                    label: Text('ID'),
+                  ),*/
+                  DataColumn(
+                    label: Text('IDENTIFICACIÓN'),
                   ),
-                  DataCell(
-                    Text(
-                      ship.ownerId.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(ship);
-                      // Set the Selected ship to Update
-                      _selectedShip = ship;
-                      // Set flag updating to true to indicate in Update Mode
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
+                  DataColumn(
+                    label: Text('NOMBRE'),
                   ),
-                  DataCell(
-                    Text(
-                      ship.identification.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(ship);
-                      // Set the Selected ship to Update
-                      _selectedShip = ship;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
+                  DataColumn(
+                    label: Text('PAÍS'),
                   ),
-                  DataCell(
-                    Text(
-                      ship.name.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(ship);
-                      // Set the Selected ship to Update
-                      _selectedShip = ship;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
+                  DataColumn(
+                    label: Text('BORRAR'),
                   ),
-                  DataCell(
-                    Text(
-                      ship.countryId.toUpperCase(),
-                    ),
-                    onTap: () {
-                      _showValues(ship);
-                      // Set the Selected ship to Update
-                      _selectedShip = ship;
-                      setState(() {
-                        _isUpdating = true;
-                      });
-                    },
-                  ),
-                  DataCell(IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      _deleteShip(ship);
-                    },
-                  ))
-                ]),
+                ],
+                rows: _ships
+                    .map(
+                      (ship) => DataRow(cells: [
+                        /*DataCell(
+                          Text(ship.id),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),*/
+                        DataCell(
+                          Text(
+                            ship.identification.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            ship.shipName.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            ship.country.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _deleteShip(ship);
+                          },
+                        ))
+                      ]),
+                    )
+                    .toList(),
               )
-              .toList(),
-        ),
+            : DataTable(
+                columns: [
+                  /*DataColumn(
+                    label: Text('ID'),
+                  ),*/
+                  DataColumn(
+                    label: Text('PROPIETARIO'),
+                  ),
+                  DataColumn(
+                    label: Text('IDENTIFICACIÓN'),
+                  ),
+                  DataColumn(
+                    label: Text('NOMBRE'),
+                  ),
+                  DataColumn(
+                    label: Text('PAÍS'),
+                  ),
+                  DataColumn(
+                    label: Text('BORRAR'),
+                  ),
+                ],
+                rows: _ships
+                    .map(
+                      (ship) => DataRow(cells: [
+                        /*DataCell(
+                          Text(ship.id),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),*/
+                        DataCell(
+                          Text(
+                            ship.ownerName.toUpperCase() +
+                                ' ' +
+                                ship.ownerLastName.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            // Set flag updating to true to indicate in Update Mode
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            ship.identification.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            ship.shipName.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(
+                          Text(
+                            ship.country
+                                .toUpperCase(), //ship.countryId.toUpperCase(),
+                          ),
+                          onTap: () {
+                            _showValues(ship);
+                            // Set the Selected ship to Update
+                            _selectedShip = ship;
+                            setState(() {
+                              _isUpdating = true;
+                            });
+                          },
+                        ),
+                        DataCell(IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _deleteShip(ship);
+                          },
+                        ))
+                      ]),
+                    )
+                    .toList(),
+              ),
       ),
     );
   }
@@ -259,16 +358,16 @@ class _ShipsScreenState extends State<ShipsScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: TextField(
-                controller: _ownerIdController,
+                controller: _ownerDniController,
                 decoration: InputDecoration.collapsed(
-                  hintText: 'Propietario',
+                  hintText: 'DNI del propietario',
                 ),
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _identificationController,
                 decoration: InputDecoration.collapsed(
@@ -277,7 +376,7 @@ class _ShipsScreenState extends State<ShipsScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _nameController,
                 decoration: InputDecoration.collapsed(
@@ -286,7 +385,7 @@ class _ShipsScreenState extends State<ShipsScreen> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.all(20.0),
+              padding: EdgeInsets.all(15.0),
               child: TextField(
                 controller: _countryController,
                 decoration: InputDecoration.collapsed(
