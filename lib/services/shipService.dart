@@ -1,7 +1,5 @@
-import 'package:flutter/src/widgets/editable_text.dart';
-import 'package:flutter/src/widgets/editable_text.dart';
 import 'package:revisiones_spm/models/ship.dart';
-import 'package:revisiones_spm/constants.dart';
+import 'package:revisiones_spm/common.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 

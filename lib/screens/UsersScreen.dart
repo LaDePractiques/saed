@@ -237,6 +237,11 @@ class _UsersScreenState extends State<UsersScreen> {
                               TextStyle(color: Theme.of(context).primaryColor),
                         ),
                         subtitle: Text(user.roleName),
+                        trailing: Wrap(spacing: 12, children: <Widget>[
+                          IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
+                          IconButton(
+                              onPressed: () {}, icon: Icon(Icons.delete)),
+                        ]),
                         leading: Text(user.id));
                   },
                   body: Container(

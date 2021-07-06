@@ -10,7 +10,7 @@ import 'package:revisiones_spm/screens/HomeScreen.dart';
 import 'package:revisiones_spm/screens/UsersScreen.dart';
 import 'package:revisiones_spm/services/functions.dart';
 
-import 'constants.dart';
+import 'common.dart';
 
 void main() => runApp(new MyApp());
 

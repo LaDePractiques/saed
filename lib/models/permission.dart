@@ -1,19 +1,15 @@
-// To parse this JSON data, do
-//
-//     final permission = permissionFromJson(jsonString);
-
 import 'dart:convert';
 
 class Permission {
   Permission({
     this.id,
     this.name,
-    this.permissionsList,
+    this.isExpanded = false,
   });
 
   String id;
   String name;
-  List<PermissionsList> permissionsList;
+  bool isExpanded;
 
   factory Permission.fromRawJson(String str) =>
       Permission.fromJson(json.decode(str));
@@ -23,25 +19,21 @@ class Permission {
   factory Permission.fromJson(Map<String, dynamic> json) => Permission(
         id: json["id"],
         name: json["name"],
-        permissionsList: List<PermissionsList>.from(
-            json["permissions_list"].map((x) => PermissionsList.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
         "id": id,
         "name": name,
-        "permissions_list":
-            List<dynamic>.from(permissionsList.map((x) => x.toJson())),
       };
 }
 
 class PermissionsList {
   PermissionsList({
-    this.id,
+    //this.id,
     this.name,
   });
 
-  String id;
+  //String id;
   String name;
 
   factory PermissionsList.fromRawJson(String str) =>
@@ -51,12 +43,12 @@ class PermissionsList {
 
   factory PermissionsList.fromJson(Map<String, dynamic> json) =>
       PermissionsList(
-        id: json["id"],
+        //id: json["id"],
         name: json["name"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        //"id": id,
         "name": name,
       };
 }
