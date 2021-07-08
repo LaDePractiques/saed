@@ -6,8 +6,9 @@ import 'package:http/http.dart' as http;
 class PermissionService {
   //services db
   //Role: admin
-  static Future<List<Permission>> getAllRoles() async {
-    List<Permission> list = [];
+
+  static Future<List<Role>> getAllRoles() async {
+    List<Role> list = [];
     try {
       var map = Map<String, dynamic>();
       map['action'] = GET_ALL_ROLES_ACTION;
@@ -16,8 +17,8 @@ class PermissionService {
       if (200 == response.statusCode) {
         final jsonresponse = json.decode(response.body);
         print(jsonresponse);
-        List<Permission> permissionsList = List<Permission>.from(
-            jsonresponse.map((j) => Permission.fromJson(j)));
+        List<Role> permissionsList =
+            List<Role>.from(jsonresponse.map((j) => Role.fromJson(j)));
         return permissionsList;
       } else {
         return list;
@@ -28,8 +29,8 @@ class PermissionService {
     }
   }
 
-  static Future<List<PermissionsList>> getAllPermissions(String role) async {
-    List<PermissionsList> list = [];
+  static Future<List> getAllPermissions(String role) async {
+    List<String> list = [];
     try {
       var map = Map<String, dynamic>();
       map['action'] = GET_ALL_PERMISSIONS_OF_ROLES;
@@ -39,9 +40,11 @@ class PermissionService {
       if (200 == response.statusCode) {
         final jsonresponse = json.decode(response.body);
         print(jsonresponse);
-        List<PermissionsList> permissionsList = List<PermissionsList>.from(
-            jsonresponse.map((j) => PermissionsList.fromJson(j)));
-        return permissionsList;
+        PermissionList permissionList = PermissionList.fromJson(jsonresponse);
+        for (var item in permissionList.permissions) {
+          list.add(item.name);
+        }
+        return list;
       } else {
         return list;
       }
@@ -52,8 +55,8 @@ class PermissionService {
   }
 
   //Role: client
-  static Future<List<Permission>> getUserPermissions() async {
-    List<Permission> list = [];
+  static Future<List<Role>> getUserPermissions() async {
+    List<Role> list = [];
     try {
       var map = Map<String, dynamic>();
       map['action'] = GET_ALL_PERMISSIONS_OF_USER_ACTION;
@@ -63,8 +66,8 @@ class PermissionService {
       if (200 == response.statusCode) {
         final jsonresponse = json.decode(response.body);
         print(jsonresponse);
-        List<Permission> permissionsList = List<Permission>.from(
-            jsonresponse.map((j) => Permission.fromJson(j)));
+        List<Role> permissionsList =
+            List<Role>.from(jsonresponse.map((j) => Role.fromJson(j)));
         return permissionsList;
       } else {
         return list;

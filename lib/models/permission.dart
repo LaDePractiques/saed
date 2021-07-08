@@ -1,4 +1,46 @@
 import 'dart:convert';
+import 'dart:async';
+import 'package:flutter/widgets.dart';
+import 'package:revisiones_spm/services/PermissionService.dart';
+
+class Role {
+  Role({
+    this.id,
+    this.name,
+    this.permissionsList,
+    this.isExpanded = false,
+  });
+
+  String id;
+  String name;
+  List permissionsList;
+  bool isExpanded;
+
+  List genenrateList() {
+    PermissionService.getAllPermissions(id).then((permissions) {
+      if (permissions.length != null) {
+        for (var i = 0; i < permissions.length; i++) {
+          permissionsList.add(permissions[i].name);
+        }
+      }
+    });
+    return permissionsList;
+  }
+
+  factory Role.fromRawJson(String str) => Role.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Role.fromJson(Map<String, dynamic> json) => Role(
+        id: json["id"],
+        name: json["name"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "name": name,
+      };
+}
 
 class Permission {
   Permission({
@@ -27,28 +69,17 @@ class Permission {
       };
 }
 
-class PermissionsList {
-  PermissionsList({
-    //this.id,
-    this.name,
+class PermissionList {
+  final List<Permission> permissions;
+
+  PermissionList({
+    this.permissions,
   });
 
-  //String id;
-  String name;
+  factory PermissionList.fromJson(List<dynamic> parsedJson) {
+    List<Permission> permissions =
+        parsedJson.map((i) => Permission.fromJson(i)).toList();
 
-  factory PermissionsList.fromRawJson(String str) =>
-      PermissionsList.fromJson(json.decode(str));
-
-  String toRawJson() => json.encode(toJson());
-
-  factory PermissionsList.fromJson(Map<String, dynamic> json) =>
-      PermissionsList(
-        //id: json["id"],
-        name: json["name"],
-      );
-
-  Map<String, dynamic> toJson() => {
-        //"id": id,
-        "name": name,
-      };
+    return new PermissionList(permissions: permissions);
+  }
 }
