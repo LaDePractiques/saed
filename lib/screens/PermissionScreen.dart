@@ -10,12 +10,12 @@ class PermissionScreen extends StatefulWidget {
 }
 
 class _PermissionScreenState extends State<PermissionScreen> {
-  List<Permission> _roles;
-  List<PermissionsList> _permissions;
+  List<Role> _roles;
+  List<String> _permissions;
   GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _firstNameController;
   TextEditingController _lastNameController;
-  Permission _selectedRole;
+  Role _selectedRole;
   bool _isUpdating;
   String _titleProgress;
   ScrollController _scrollController = ScrollController();
@@ -42,7 +42,6 @@ class _PermissionScreenState extends State<PermissionScreen> {
   }
 
   _getPermissions(String role) {
-    //_showProgress('Loading Users...');
     PermissionService.getAllPermissions(role).then((permissions) {
       setState(() {
         _permissions = permissions;
@@ -50,6 +49,11 @@ class _PermissionScreenState extends State<PermissionScreen> {
       //_showProgress(widget.title); // Reset the title
       print("Length ${permissions.length}");
     });
+  }
+
+  int _getLength(String role) {
+    _getPermissions(role);
+    return _permissions.length;
   }
 
   @override
@@ -80,7 +84,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
                   _roles[panelIndex].isExpanded = !isExpanded;
                 });
               },
-              children: _roles.map<ExpansionPanel>((Permission role) {
+              children: _roles.map<ExpansionPanel>((Role role) {
                 return ExpansionPanel(
                   headerBuilder: (context, isExpanded) {
                     return ListTile(
@@ -95,11 +99,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
                       ]),
                     );
                   },
-                  body: Container(
-                    height: 200,
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    child: getListView(role),
-                  ),
+                  body: myBody(role.id),
                   isExpanded: role.isExpanded,
                 );
               }).toList(),
@@ -108,7 +108,6 @@ class _PermissionScreenState extends State<PermissionScreen> {
         ),
         onRefresh: () async {
           await Future.delayed(Duration(seconds: 2), () {
-            // do something
             _getRoles();
           });
         },
@@ -122,8 +121,24 @@ class _PermissionScreenState extends State<PermissionScreen> {
     );
   }
 
-  Widget getListView(Permission role) {
-    _getPermissions(role.id);
+  Widget myBody(String id) {
+    _getPermissions(id);
+    return Container(
+      height: 200,
+      padding: EdgeInsets.symmetric(horizontal: 5.0),
+      //child: getListView(role),
+      child: ListView.builder(
+        itemCount: _permissions.length,
+        itemBuilder: (BuildContext context, int position) {
+          return getRow(position, _permissions);
+        },
+      ),
+    );
+    //}
+    //}
+  }
+
+  Widget getListView(Role role) {
     return ListView.builder(
       itemCount: _permissions == null ? 0 : _permissions.length,
       itemBuilder: (BuildContext context, int position) {
@@ -132,7 +147,21 @@ class _PermissionScreenState extends State<PermissionScreen> {
     );
   }
 
-  Widget getRow(int i, List permissions) {
+  Widget getRow(int i, List fields) {
+    return GestureDetector(
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 5.0),
+        child: ListTile(
+          title: Text(
+            fields[i],
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      ),
+    );
+  }
+
+  /*Widget getRow(int i, List permissions) {
     return GestureDetector(
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 5.0),
@@ -144,7 +173,7 @@ class _PermissionScreenState extends State<PermissionScreen> {
         ),
       ),
     );
-  }
+  }*/
 
   @override
   void dispose() {
