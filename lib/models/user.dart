@@ -1,8 +1,6 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:revisiones_spm/models/ship.dart';
-
 class User {
   User(
       {this.id,

@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:core';
 import 'package:http/http.dart' as http;
 import 'package:revisiones_spm/models/user.dart';
-import 'package:revisiones_spm/screens/HomeScreen.dart';
-import 'package:revisiones_spm/screens/UsersScreen.dart';
 import 'package:revisiones_spm/services/functions.dart';
-
 import 'common.dart';
 
 void main() => runApp(new MyApp());
@@ -20,8 +15,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Revisiones SPM',
-      routes: myRoutes,
-      //home: HomeScreen(),
+      routes: myRoutes, // (services/functions.dart)
       //open login:
       home: new MyHomePage(),
     );
@@ -40,8 +34,7 @@ class _MyHomePageState extends State<MyHomePage> {
   String msg = '';
 
   Future<List> _login() async {
-    final response = await http
-        .post("http://10.0.2.2/revisiones_spmaritim/login.php", body: {
+    final response = await http.post(ROOT_LOGIN, body: {
       "email": controllerEmail.text,
       "password": controllerPass.text,
     });
@@ -136,7 +129,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               right: 32,
                             ),
                             child: TextButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                //------ acció recordar contrasenya!!!------
+                              },
                               child: Text(
                                 'Recordar contraseña',
                                 style: TextStyle(color: Colors.grey),

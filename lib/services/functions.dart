@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:revisiones_spm/models/user.dart';
 import 'package:revisiones_spm/screens/AuditsScreen.dart';
+import 'package:revisiones_spm/screens/FormAddUserScreen.dart';
+import 'package:revisiones_spm/screens/FormUpdateUserScreen.dart';
 import 'package:revisiones_spm/screens/HomeScreen.dart';
 import 'package:revisiones_spm/screens/MyAuditsScreen.dart';
 import 'package:revisiones_spm/screens/MyWorksScreen.dart';
@@ -18,6 +19,8 @@ final myRoutes = {
   '/myWorks': (BuildContext context) => MyWorksScreen(),
   '/permission': (BuildContext context) => PermissionScreen(),
   '/works': (BuildContext context) => WorksScreen(),
+  '/form': (BuildContext context) => FormAddUserScreen(),
+  '/form_update': (BuildContext context) => FormUpdateUserScreen(),
 };
 
 void changeScreen(BuildContext context, Widget widget) {

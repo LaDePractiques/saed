@@ -1,34 +1,47 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:convert';
 
 class Audit {
-  int id;
-  String shipId;
-  int userId;
-  DateTime date;
-  Timestamp time;
-  DateTime dateStop;
-  String checklistId;
-  DateTime dateStart;
-  DateTime dateEnd;
+  String id;
+  String shipName;
+  String userName;
+  String dateStart;
+  String time;
+  String checklist;
 
   Audit(
       {this.id,
-      this.shipId,
-      this.userId,
-      this.date,
-      this.time,
-      this.dateStop,
-      this.checklistId,
+      this.shipName,
+      this.userName,
       this.dateStart,
-      this.dateEnd});
+      this.time,
+      this.checklist});
 
   get getId => id;
-  get getShipId => shipId;
-  get getUserId => userId;
-  get getDate => date;
+  get getShipId => shipName;
+  get getUserId => userName;
   get getTime => time;
-  get getDateStop => dateStop;
-  get getChecklistId => checklistId;
   get getDateStart => dateStart;
-  get getDateEnd => dateEnd;
+  get getChecklist => checklist;
+
+  factory Audit.fromRawJson(String str) => Audit.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory Audit.fromJson(Map<String, dynamic> json) => Audit(
+        id: json["id"],
+        shipName: json["ship_name"],
+        userName: json["user_name"],
+        dateStart: json["date_start"],
+        time: json["time"],
+        checklist: json["checklist"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "ship_name": shipName,
+        "user_name": userName,
+        "date_start": dateStart,
+        "time": time,
+        "checklist": checklist,
+      };
 }

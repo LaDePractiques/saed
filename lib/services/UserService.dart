@@ -28,12 +28,29 @@ class UserService {
   }
 
   // add User to the db
-  static Future<String> addUser(String firstName, String lastName) async {
+  static Future<String> addUser(
+      String firstName,
+      String lastName,
+      String dni,
+      String email,
+      String psw,
+      String direction,
+      String role,
+      String city,
+      String birthdate) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = ADD_USER_ACTION;
       map['first_name'] = firstName;
       map['last_name'] = lastName;
+      map['dni'] = dni;
+      map['email'] = email;
+      map['password'] = psw;
+      map['direction'] = direction;
+      map['city'] = city;
+      map['role'] = role;
+      map['birthdate'] = birthdate;
+
       final response = await http.post(ROOT_USER_ACTION, body: map);
       print('addUser Response: ${response.body}');
       if (200 == response.statusCode) {
@@ -48,13 +65,27 @@ class UserService {
 
   // update an User in Db
   static Future<String> updateUser(
-      String userId, String firstName, String lastName) async {
+      String firstName,
+      String lastName,
+      String dni,
+      String email,
+      String psw,
+      String direction,
+      String role,
+      String city,
+      String birthdate) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = UPDATE_USER_ACTION;
-      map['id'] = userId;
       map['first_name'] = firstName;
       map['last_name'] = lastName;
+      map['dni'] = dni;
+      map['email'] = email;
+      map['password'] = psw;
+      map['direction'] = direction;
+      map['city'] = city;
+      map['role'] = role;
+      map['birthdate'] = birthdate;
       final response = await http.post(ROOT_USER_ACTION, body: map);
       print('updateUser Response: ${response.body}');
       if (200 == response.statusCode) {

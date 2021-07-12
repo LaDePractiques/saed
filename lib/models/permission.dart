@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'dart:async';
-import 'package:flutter/widgets.dart';
-import 'package:revisiones_spm/services/PermissionService.dart';
 
 class Role {
   Role({
@@ -15,17 +12,6 @@ class Role {
   String name;
   List permissionsList;
   bool isExpanded;
-
-  List genenrateList() {
-    PermissionService.getAllPermissions(id).then((permissions) {
-      if (permissions.length != null) {
-        for (var i = 0; i < permissions.length; i++) {
-          permissionsList.add(permissions[i].name);
-        }
-      }
-    });
-    return permissionsList;
-  }
 
   factory Role.fromRawJson(String str) => Role.fromJson(json.decode(str));
 

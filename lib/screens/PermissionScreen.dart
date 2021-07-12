@@ -13,20 +13,14 @@ class _PermissionScreenState extends State<PermissionScreen> {
   List<Role> _roles;
   List<String> _permissions;
   GlobalKey<ScaffoldState> _scaffoldKey;
-  TextEditingController _firstNameController;
-  TextEditingController _lastNameController;
-  Role _selectedRole;
-  bool _isUpdating;
   String _titleProgress;
   ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _permissions = [];
     _roles = [];
-    _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
     _getRoles();
@@ -49,11 +43,6 @@ class _PermissionScreenState extends State<PermissionScreen> {
       //_showProgress(widget.title); // Reset the title
       print("Length ${permissions.length}");
     });
-  }
-
-  int _getLength(String role) {
-    _getPermissions(role);
-    return _permissions.length;
   }
 
   @override
@@ -93,10 +82,6 @@ class _PermissionScreenState extends State<PermissionScreen> {
                         role.name,
                         style: TextStyle(color: Theme.of(context).primaryColor),
                       ),
-                      trailing: Wrap(spacing: 12, children: <Widget>[
-                        IconButton(onPressed: () {}, icon: Icon(Icons.edit)),
-                        IconButton(onPressed: () {}, icon: Icon(Icons.delete)),
-                      ]),
                     );
                   },
                   body: myBody(role.id),
