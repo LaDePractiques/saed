@@ -7,6 +7,7 @@ class Audit {
   String dateStart;
   String time;
   String checklist;
+  bool isExpanded;
 
   Audit(
       {this.id,
@@ -14,7 +15,8 @@ class Audit {
       this.userName,
       this.dateStart,
       this.time,
-      this.checklist});
+      this.checklist,
+      this.isExpanded = false});
 
   get getId => id;
   get getShipId => shipName;
