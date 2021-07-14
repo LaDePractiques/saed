@@ -2,10 +2,11 @@ import 'package:revisiones_spm/models/audit.dart';
 import 'package:revisiones_spm/common.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:revisiones_spm/models/checklist.dart';
 
 class AuditService {
   //services db
-
+  //All audits
   static Future<List<Audit>> getAllAudits() async {
     List<Audit> list = [];
     try {
@@ -52,16 +53,46 @@ class AuditService {
     }
   }
 
+  //All checklist
+  static Future<List<Checklist>> getChecklist() async {
+    List<Checklist> list = [];
+    try {
+      var map = Map<String, dynamic>();
+      map['action'] = GET_ALL_CHECKLIST_NAME_ACTION;
+      final response = await http.post(ROOT_AUDIT_ACTION, body: map);
+      print('getAudits Response: ${response.body}');
+      if (200 == response.statusCode) {
+        final jsonresponse = json.decode(response.body);
+        print(jsonresponse);
+        List<Checklist> checklist = List<Checklist>.from(
+            jsonresponse.map((j) => Checklist.fromJson(j)));
+        return checklist;
+      } else {
+        return list;
+      }
+    } catch (e) {
+      print('error: $e');
+      return list;
+    }
+  }
+
   // add Audit to the db
-  static Future<String> addAudit(String ownerDni, String identification,
-      String name, String country) async {
+  static Future<String> addAudit(
+      String shipName,
+      String auditorName,
+      String auditorLastname,
+      String time,
+      String checklist,
+      String dateStart) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = ADD_AUDIT_ACTION;
-      map['owner_dni'] = ownerDni.toUpperCase();
-      map['identification'] = identification.toUpperCase();
-      map['name'] = name.toUpperCase();
-      map['country'] = country.toUpperCase();
+      map['ship_name'] = shipName.toUpperCase();
+      map['auditor_name'] = auditorName.toUpperCase();
+      map['auditor_lastname'] = auditorLastname.toUpperCase();
+      map['time'] = time;
+      map['checklist'] = checklist.toUpperCase();
+      map['date_start'] = dateStart;
       final response = await http.post(ROOT_AUDIT_ACTION, body: map);
       print('addAudit Response: ${response.body}');
       if (200 == response.statusCode) {

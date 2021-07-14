@@ -2,21 +2,22 @@ import 'dart:convert';
 import 'dart:core';
 
 class User {
-  User(
-      {this.id,
-      this.firstName,
-      this.lastName,
-      this.email,
-      //this.emailVerifiedAt,
-      this.dni,
-      this.direction,
-      this.city,
-      this.birthdate,
-      this.password,
-      this.roleId,
-      //this.rememberToken,
-      this.roleName,
-      this.isExpanded = false});
+  User({
+    this.id,
+    this.firstName,
+    this.lastName,
+    this.email,
+    //this.emailVerifiedAt,
+    this.dni,
+    this.direction,
+    this.city,
+    this.birthdate,
+    this.password,
+    this.roleId,
+    //this.rememberToken,
+    this.roleName,
+    this.isExpanded = false,
+  });
 
   String id;
   String firstName;
