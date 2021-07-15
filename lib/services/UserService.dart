@@ -5,11 +5,35 @@ import 'package:http/http.dart' as http;
 
 class UserService {
   //services db
+  //get all users
   static Future<List<User>> getUsers() async {
     List<User> list = [];
     try {
       var map = Map<String, dynamic>();
       map['action'] = GET_ALL_USERS_ACTION;
+      final response = await http.post(ROOT_USER_ACTION, body: map);
+      //print('getUsers Response: ${response.body}');
+      if (200 == response.statusCode) {
+        final jsonresponse = json.decode(response.body);
+        print(jsonresponse);
+        List<User> usersList =
+            List<User>.from(jsonresponse.map((j) => User.fromJson(j)));
+        return usersList;
+      } else {
+        return list;
+      }
+    } catch (e) {
+      print('error: $e');
+      return list;
+    }
+  }
+
+  //get all auditors
+  static Future<List<User>> getAuditors() async {
+    List<User> list = [];
+    try {
+      var map = Map<String, dynamic>();
+      map['action'] = GET_ALL_AUDITORS_ACTION;
       final response = await http.post(ROOT_USER_ACTION, body: map);
       //print('getUsers Response: ${response.body}');
       if (200 == response.statusCode) {

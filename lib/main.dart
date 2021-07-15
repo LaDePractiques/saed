@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return new MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Revisiones SPM',
-      routes: myRoutes, // (services/functions.dart)
+      routes: myRoutes, // (common.dart)
       //open login:
       home: new MyHomePage(),
     );

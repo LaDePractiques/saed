@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:revisiones_spm/models/audit.dart';
 import 'package:revisiones_spm/models/checklist.dart';
 import 'package:revisiones_spm/models/ship.dart';
 import 'package:revisiones_spm/models/user.dart';
@@ -7,18 +8,19 @@ import 'package:revisiones_spm/services/ShipService.dart';
 import 'package:revisiones_spm/services/UserService.dart';
 import 'package:regexed_validator/regexed_validator.dart';
 
-class FormAddAuditScreen extends StatefulWidget {
+class FormUpdateAuditScreen extends StatefulWidget {
   @override
-  _FormAddAuditScreenState createState() => _FormAddAuditScreenState();
+  _FormUpdateAuditScreenState createState() => _FormUpdateAuditScreenState();
 }
 
-class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
+class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
   final _formKey = GlobalKey<FormState>();
-  String dropdownAuditor = 'Seleccione auditor';
+  String id;
+  String dropdownAuditor;
   String auditorName;
   String auditorLastname;
-  String dropdownChecklist = 'Seleccione checklist';
-  String dropdownShip = 'Seleccione barco';
+  String dropdownChecklist;
+  String dropdownShip;
   TextEditingController dateCtrl = new TextEditingController();
   TextEditingController timeCtrl = new TextEditingController();
   List<User> _auditors;
@@ -74,6 +76,14 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Audit audit = ModalRoute.of(context).settings.arguments;
+    dropdownAuditor = audit.userName;
+    dropdownChecklist = audit.checklist;
+    dropdownShip = audit.shipName;
+    dateCtrl = audit.dateStart as TextEditingController;
+    timeCtrl = audit.time as TextEditingController;
+    id = audit.getId;
+
     return SingleChildScrollView(
       child: new Container(
         margin: EdgeInsets.all(20.0),
@@ -220,7 +230,8 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
     if (_formKey.currentState.validate() &&
         auditorName != null &&
         auditorLastname != null) {
-      AuditService.addAudit(
+      AuditService.updateAudit(
+        id,
         dropdownShip,
         auditorName,
         auditorLastname,

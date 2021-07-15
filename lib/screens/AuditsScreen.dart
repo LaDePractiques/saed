@@ -66,9 +66,17 @@ class _AuditsScreenState extends State<AuditsScreen> {
     _showProgress('Deleting Audit...');
     AuditService.deleteAudit(audit.id).then((result) {
       if ('success' == result) {
-        _getAudits(); // Refresh after delete...
+        _getAudits(); // Refresh after delete
       }
     });
+  }
+
+  _startAudit(Audit audit) {
+    Navigator.pushNamed(context, '/start_audit', arguments: audit);
+  }
+
+  _summaryAudit(Audit audit) {
+    Navigator.pushNamed(context, '/summary_audit', arguments: audit);
   }
 
   // UI

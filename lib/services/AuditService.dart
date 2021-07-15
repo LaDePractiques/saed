@@ -106,16 +106,24 @@ class AuditService {
   }
 
   // update an Audit in Db
-  static Future<String> updateAudit(String auditId, String ownerDni,
-      String identification, String name, String country) async {
+  static Future<String> updateAudit(
+      String auditId,
+      String shipName,
+      String auditorName,
+      String auditorLastname,
+      String time,
+      String checklist,
+      String dateStart) async {
     try {
       var map = Map<String, dynamic>();
       map['action'] = UPDATE_AUDIT_ACTION;
       map['id'] = auditId;
-      map['owner_dni'] = ownerDni;
-      map['identification'] = identification;
-      map['name'] = name;
-      map['country'] = country;
+      map['ship_name'] = shipName.toUpperCase();
+      map['auditor_name'] = auditorName.toUpperCase();
+      map['auditor_lastname'] = auditorLastname.toUpperCase();
+      map['time'] = time;
+      map['checklist'] = checklist.toUpperCase();
+      map['date_start'] = dateStart;
       final response = await http.post(ROOT_AUDIT_ACTION, body: map);
       print('updateAudit Response: ${response.body}');
       if (200 == response.statusCode) {
