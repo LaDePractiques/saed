@@ -17,25 +17,34 @@ class _FormUpdateUserScreenState extends State<FormUpdateUserScreen> {
   TextEditingController psw2Ctrl = new TextEditingController();
   TextEditingController directionCtrl = new TextEditingController();
   TextEditingController roleCtrl = new TextEditingController();
-  TextEditingController countryCtrl = new TextEditingController();
+  TextEditingController cityCtrl = new TextEditingController();
   TextEditingController birthdateCtrl = new TextEditingController();
+
+  String _titleProgress = 'Editar Usuario';
 
   @override
   Widget build(BuildContext context) {
     User user = ModalRoute.of(context).settings.arguments;
-    nameCtrl = user.firstName as TextEditingController;
-    lastnameCtrl = user.lastName as TextEditingController;
-    dniCtrl = user.dni as TextEditingController;
-    emailCtrl = user.email as TextEditingController;
-    directionCtrl = user.direction as TextEditingController;
-    roleCtrl = user.roleName as TextEditingController;
-    countryCtrl = user.city as TextEditingController;
-    birthdateCtrl = user.birthdate as TextEditingController;
+    nameCtrl.text = user.firstName;
+    lastnameCtrl.text = user.lastName;
+    dniCtrl.text = user.dni;
+    emailCtrl.text = user.email;
+    directionCtrl.text = user.direction;
+    roleCtrl.text = user.roleName;
+    cityCtrl.text = user.city;
+    birthdateCtrl.text = user.birthdate.toString();
 
-    return SingleChildScrollView(
-      child: new Container(
-        margin: EdgeInsets.all(20.0),
-        child: Form(key: _formKey, child: formUI(user)),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_titleProgress),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: new Container(
+            margin: EdgeInsets.all(20.0),
+            child: Form(key: _formKey, child: formUI(user)),
+          ),
+        ),
       ),
     );
   }
@@ -45,7 +54,7 @@ class _FormUpdateUserScreenState extends State<FormUpdateUserScreen> {
     item,
   ) {
     return Padding(
-      padding: EdgeInsets.symmetric(vertical: 7),
+      padding: EdgeInsets.symmetric(vertical: 3),
       child: Card(child: ListTile(leading: Icon(icon), title: item)),
     );
   }
@@ -104,7 +113,7 @@ class _FormUpdateUserScreenState extends State<FormUpdateUserScreen> {
         formItemsDesign(
             Icons.location_city,
             TextFormField(
-              controller: countryCtrl,
+              controller: cityCtrl,
               decoration: new InputDecoration(
                 labelText: 'País',
               ),
@@ -246,7 +255,7 @@ class _FormUpdateUserScreenState extends State<FormUpdateUserScreen> {
               psw1Ctrl.text,
               directionCtrl.text,
               roleCtrl.text,
-              countryCtrl.text,
+              cityCtrl.text,
               birthdateCtrl.text)
           .then((result) {
         if ('success' == result) {

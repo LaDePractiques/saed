@@ -1,3 +1,4 @@
+import 'package:revisiones_spm/models/answer.dart';
 import 'package:revisiones_spm/models/audit.dart';
 import 'package:revisiones_spm/common.dart';
 import 'dart:convert';
@@ -151,6 +152,54 @@ class AuditService {
       }
     } catch (e) {
       return "error";
+    }
+  }
+
+  //All answers (one audit)
+  static Future<List<Answer>> getAllAnswer(String auditId) async {
+    List<Answer> list = [];
+    try {
+      var map = Map<String, dynamic>();
+      map['action'] = GET_ALL_ANSWER_ACTION;
+      map['id'] = auditId;
+      final response = await http.post(ROOT_AUDIT_ACTION, body: map);
+      print('getAnswers Response: ${response.body}');
+      if (200 == response.statusCode) {
+        final jsonresponse = json.decode(response.body);
+        print(jsonresponse);
+        List<Answer> answerList =
+            List<Answer>.from(jsonresponse.map((j) => Answer.fromJson(j)));
+        return answerList;
+      } else {
+        return list;
+      }
+    } catch (e) {
+      print('error: $e');
+      return list;
+    }
+  }
+
+  //get data for chart
+  static Future<List<ChartAudit>> getdata(String auditId) async {
+    List<ChartAudit> list = [];
+    try {
+      var map = Map<String, dynamic>();
+      map['action'] = SUMMARY_CHART_AUDIT_ACTION;
+      map['id'] = auditId;
+      final response = await http.post(ROOT_AUDIT_ACTION, body: map);
+      print('getAnswers Response: ${response.body}');
+      if (200 == response.statusCode) {
+        final jsonresponse = json.decode(response.body);
+        print(jsonresponse);
+        List<ChartAudit> answerList = List<ChartAudit>.from(
+            jsonresponse.map((j) => ChartAudit.fromJson(j)));
+        return answerList;
+      } else {
+        return list;
+      }
+    } catch (e) {
+      print('error: $e');
+      return list;
     }
   }
 }

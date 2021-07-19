@@ -27,6 +27,8 @@ class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
   List<Checklist> _checklist;
   List<Ship> _ships;
 
+  String _titleProgress = 'Editar auditoría';
+
   @override
   void initState() {
     super.initState();
@@ -80,14 +82,21 @@ class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
     dropdownAuditor = audit.userName;
     dropdownChecklist = audit.checklist;
     dropdownShip = audit.shipName;
-    dateCtrl = audit.dateStart as TextEditingController;
-    timeCtrl = audit.time as TextEditingController;
+    dateCtrl.text = audit.dateStart;
+    timeCtrl.text = audit.time;
     id = audit.getId;
 
-    return SingleChildScrollView(
-      child: new Container(
-        margin: EdgeInsets.all(20.0),
-        child: Form(key: _formKey, child: formUI()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_titleProgress),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: new Container(
+            margin: EdgeInsets.all(20.0),
+            child: Form(key: _formKey, child: formUI()),
+          ),
+        ),
       ),
     );
   }
@@ -102,16 +111,11 @@ class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
   Widget formUI() {
     return Column(
       children: <Widget>[
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownAuditor,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
           onChanged: (String newValue) {
             setState(() {
               dropdownAuditor = newValue;
@@ -124,16 +128,11 @@ class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
             );
           }).toList(),
         ),
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownChecklist,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
           onChanged: (String newValue) {
             setState(() {
               dropdownChecklist = newValue;
@@ -146,16 +145,11 @@ class _FormUpdateAuditScreenState extends State<FormUpdateAuditScreen> {
             );
           }).toList(),
         ),
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownShip,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
           onChanged: (String newValue) {
             setState(() {
               dropdownShip = newValue;

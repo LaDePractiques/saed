@@ -1,27 +1,25 @@
 import 'dart:convert';
 import 'dart:core';
 
-import 'package:revisiones_spm/models/audit.dart';
-
 class Answer {
   Answer({
-    this.id,
-    this.auditId,
     this.questionId,
+    this.question,
+    this.answerId,
     this.answer,
     this.comment,
   });
 
-  String id;
-  String auditId;
   String questionId;
+  String question;
+  String answerId;
   String answer;
   String comment;
 
   //  GETTERS
-  String get getId => id;
-  String get getAuditId => auditId;
-  String get getQuestionId => questionId;
+  String get getId => questionId;
+  String get getAuditId => question;
+  String get getQuestionId => answerId;
   String get getAnswer => answer;
   String get getComment => comment;
 
@@ -30,18 +28,48 @@ class Answer {
   String toRawJson() => json.encode(toJson());
 
   factory Answer.fromJson(Map<String, dynamic> json) => Answer(
-        id: json["id"],
-        auditId: json["audit_id"],
         questionId: json["question_id"],
+        question: json["question"],
+        answerId: json["answer_id"],
         answer: json["answer"],
         comment: json["comment"],
       );
 
   Map<String, dynamic> toJson() => {
-        "id": id,
-        "audit_id": auditId,
         "question_id": questionId,
+        "question": question,
+        "answer_id": answerId,
         "answer": answer,
         "comment": comment,
+      };
+}
+
+// Summary chart audit
+class ChartAudit {
+  ChartAudit({
+    this.answer,
+    this.total,
+  });
+
+  String answer;
+  String total;
+
+  //  GETTERS
+  String get getAnswer => answer;
+  String get gettotal => total;
+
+  factory ChartAudit.fromRawJson(String str) =>
+      ChartAudit.fromJson(json.decode(str));
+
+  String toRawJson() => json.encode(toJson());
+
+  factory ChartAudit.fromJson(Map<String, dynamic> json) => ChartAudit(
+        answer: json["answer"],
+        total: json["total"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "answer": answer,
+        "total": total,
       };
 }

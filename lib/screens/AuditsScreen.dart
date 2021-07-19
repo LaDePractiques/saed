@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:revisiones_spm/models/audit.dart';
+import 'package:revisiones_spm/screens/SummaryAuditScreen.dart';
 import 'package:revisiones_spm/services/AuditService.dart';
 import 'dart:async';
 
@@ -32,17 +33,10 @@ class _AuditsScreenState extends State<AuditsScreen> {
     });
   }
 
-  _showSnackBar(context, message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-      ),
-    );
-  }
-
   // add an Audit
-  _addAudit() {
-    _showProgress('Adding Audit...');
+  _addAudit(
+    BuildContext context,
+  ) {
     Navigator.pushNamed(context, '/form_audit'); // go to FormScreen
   }
 
@@ -57,8 +51,7 @@ class _AuditsScreenState extends State<AuditsScreen> {
     });
   }
 
-  _updateAudit(Audit audit) {
-    _showProgress('Updating Audit...');
+  _updateAudit(BuildContext context, Audit audit) {
     Navigator.pushNamed(context, '/form_audit_update', arguments: audit);
   }
 
@@ -71,12 +64,13 @@ class _AuditsScreenState extends State<AuditsScreen> {
     });
   }
 
-  _startAudit(Audit audit) {
+  _startAudit(BuildContext context, Audit audit) {
     Navigator.pushNamed(context, '/start_audit', arguments: audit);
   }
 
-  _summaryAudit(Audit audit) {
-    Navigator.pushNamed(context, '/summary_audit', arguments: audit);
+  _summaryAudit(BuildContext context, Audit audit) {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => SummaryAuditScreen(audit.id)));
   }
 
   // UI
@@ -125,15 +119,15 @@ class _AuditsScreenState extends State<AuditsScreen> {
                               TextStyle(color: Theme.of(context).primaryColor),
                         ),
                         subtitle: Text(audit.id),
-                        trailing: Wrap(spacing: 9, children: <Widget>[
+                        trailing: Wrap(spacing: 5, children: <Widget>[
                           IconButton(
                               onPressed: () {
-                                _summaryAudit(audit);
+                                _summaryAudit(context, audit);
                               },
                               icon: Icon(Icons.bar_chart)),
                           IconButton(
                               onPressed: () {
-                                _updateAudit(audit);
+                                _updateAudit(context, audit);
                               },
                               icon: Icon(Icons.edit)),
                           IconButton(
@@ -144,7 +138,7 @@ class _AuditsScreenState extends State<AuditsScreen> {
                         ]),
                         leading: IconButton(
                             onPressed: () {
-                              _startAudit(audit);
+                              _startAudit(context, audit);
                             },
                             icon: Icon(Icons.play_circle_outline)));
                   },
@@ -173,7 +167,7 @@ class _AuditsScreenState extends State<AuditsScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          _addAudit();
+          _addAudit(context);
         },
         child: Icon(Icons.add),
       ),

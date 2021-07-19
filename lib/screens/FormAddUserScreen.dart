@@ -18,12 +18,21 @@ class _FormAddUserScreenState extends State<FormAddUserScreen> {
   TextEditingController roleCtrl = new TextEditingController();
   TextEditingController countryCtrl = new TextEditingController();
   TextEditingController birthdateCtrl = new TextEditingController();
+
+  String _titleProgress = 'Nuevo usuario';
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: new Container(
-        margin: EdgeInsets.all(20.0),
-        child: Form(key: _formKey, child: formUI()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_titleProgress),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: new Container(
+            margin: EdgeInsets.all(20.0),
+            child: Form(key: _formKey, child: formUI()),
+          ),
+        ),
       ),
     );
   }

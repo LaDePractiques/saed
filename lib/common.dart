@@ -11,6 +11,8 @@ import 'package:revisiones_spm/screens/MyAuditsScreen.dart';
 import 'package:revisiones_spm/screens/MyWorksScreen.dart';
 import 'package:revisiones_spm/screens/PermissionScreen.dart';
 import 'package:revisiones_spm/screens/ShipsScreen.dart';
+import 'package:revisiones_spm/screens/StartAuditScreen.dart';
+import 'package:revisiones_spm/screens/SummaryAuditScreen.dart';
 import 'package:revisiones_spm/screens/UsersScreen.dart';
 import 'package:revisiones_spm/screens/WorksScreen.dart';
 
@@ -31,7 +33,7 @@ final myRoutes = {
   '/form_audit': (BuildContext context) => FormAddAuditScreen(),
   '/form_audit_update': (BuildContext context) => FormUpdateAuditScreen(),
   '/start_audit': (BuildContext context) => StartAuditScreen(),
-  '/summary_audit': (BuildContext context) => SummaryAuditScreen(),
+  //'/summary_audit': (BuildContext context) => SummaryAuditScreen(),
 };
 
 //FOR SCRIPTS PHP
@@ -59,6 +61,8 @@ const ROOT_AUDIT_ACTION =
 const GET_ALL_AUDITS_ACTION = 'GET_ALL_AUDITS';
 const GET_ALL_MYAUDITS_ACTION = 'GET_ALL_MY_AUDITS';
 const GET_ALL_CHECKLIST_NAME_ACTION = 'GET_ALL_CHECKLIST_NAME';
+const GET_ALL_ANSWER_ACTION = 'GET_ALL_ANSWER';
+const SUMMARY_CHART_AUDIT_ACTION = 'SUMMARY_CHART_AUDIT';
 const ADD_AUDIT_ACTION = 'ADD_AUDIT';
 const UPDATE_AUDIT_ACTION = 'UPDATE_AUDIT';
 const DELETE_AUDIT_ACTION = 'DELETE_AUDIT';

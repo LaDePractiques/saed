@@ -14,16 +14,18 @@ class FormAddAuditScreen extends StatefulWidget {
 
 class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
   final _formKey = GlobalKey<FormState>();
-  String dropdownAuditor = 'Seleccione auditor';
+  String dropdownAuditor;
   String auditorName;
   String auditorLastname;
-  String dropdownChecklist = 'Seleccione checklist';
-  String dropdownShip = 'Seleccione barco';
+  String dropdownChecklist;
+  String dropdownShip;
   TextEditingController dateCtrl = new TextEditingController();
   TextEditingController timeCtrl = new TextEditingController();
   List<User> _auditors;
   List<Checklist> _checklist;
   List<Ship> _ships;
+
+  String _titleProgress = 'Nueva auditoría';
 
   @override
   void initState() {
@@ -31,8 +33,6 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
     _auditors = [];
     _checklist = [];
     _ships = [];
-    auditorName = null;
-    auditorLastname = null;
     _getAuditors();
     _getChecklist();
     _getShips();
@@ -74,10 +74,17 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: new Container(
-        margin: EdgeInsets.all(20.0),
-        child: Form(key: _formKey, child: formUI()),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_titleProgress),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: new Container(
+            margin: EdgeInsets.all(20.0),
+            child: Form(key: _formKey, child: formUI()),
+          ),
+        ),
       ),
     );
   }
@@ -92,16 +99,12 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
   Widget formUI() {
     return Column(
       children: <Widget>[
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownAuditor,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
+          hint: Text('Seleccione auditor'),
           onChanged: (String newValue) {
             setState(() {
               dropdownAuditor = newValue;
@@ -114,16 +117,12 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
             );
           }).toList(),
         ),
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownChecklist,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
+          hint: Text('Seleccione checklist'),
           onChanged: (String newValue) {
             setState(() {
               dropdownChecklist = newValue;
@@ -136,16 +135,12 @@ class _FormAddAuditScreenState extends State<FormAddAuditScreen> {
             );
           }).toList(),
         ),
-        DropdownButton<String>(
+        DropdownButtonFormField<String>(
           value: dropdownShip,
           icon: const Icon(Icons.arrow_downward),
           iconSize: 24,
           elevation: 16,
-          style: const TextStyle(color: Colors.deepPurple),
-          underline: Container(
-            height: 2,
-            color: Colors.deepPurpleAccent,
-          ),
+          hint: Text('Seleccione barco'),
           onChanged: (String newValue) {
             setState(() {
               dropdownShip = newValue;
