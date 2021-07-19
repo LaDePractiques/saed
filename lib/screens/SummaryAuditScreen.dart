@@ -52,19 +52,6 @@ class _SummaryAuditScreen extends State<SummaryAuditScreen> {
     });
   }
 
-  _getData() {
-    _seriesList.add(
-      charts.Series(
-        domainFn: (ChartAudit data, _) => data.answer,
-        measureFn: (ChartAudit data, _) => int.parse(data.total),
-        id: 'Auditoría',
-        data: _answers,
-        labelAccessorFn: (ChartAudit row, _) => '${row.answer}',
-      ),
-    );
-    return _seriesList;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
